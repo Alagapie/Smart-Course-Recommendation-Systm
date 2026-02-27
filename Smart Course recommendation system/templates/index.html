@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Course Recommendation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .hero {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .advisor-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .advisor-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .search-container input::placeholder {
+            color: #666;
+        }
+        .search-container input:focus {
+            background: #fff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        .search-container button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 12px 20px;
+            font-size: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .search-container button:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .filters {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .filter-group label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #fff;
+            opacity: 0.9;
+        }
+        .filter-group input, .filter-group select {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            width: 140px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .filter-group input:focus, .filter-group select:focus {
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Discover Your Next Course</h1>
+        <p>Search for what you want to learn and apply filters for personalized results.</p>
+        <form method="POST" action="/search">
+            <div class="search-container">
+                <input type="text" name="query" placeholder="e.g., Python for data science" required>
+                <button type="submit">Search</button>
+            </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="level">Level:</label>
+                    <select id="level" name="level">
+                        <option value="">Any</option>
+                        <option value="Beginner Level">Beginner</option>
+                        <option value="Intermediate Level">Intermediate</option>
+                        <option value="Expert Level">Expert</option>
+                        <option value="All Levels">All Levels</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="max_price">Max Price (₦):</label>
+                    <input type="number" id="max_price" name="max_price" placeholder="e.g., 15000">
+                </div>
+                <div class="filter-group">
+                    <label for="min_rating">Min Rating:</label>
+                    <input type="number" id="min_rating" name="min_rating" step="0.1" placeholder="e.g., 4.5" min="0" max="5">
+                </div>
+            </div>
+        </form>
+        <a href="/advisor" class="advisor-button">🤖 Chat with AI Learning Advisor</a>
+        <a href="/tutor" class="advisor-button">🧠 Ask the Intelligent Chatbot Tutor</a>
+    </div>
+
+</body>
+</html>

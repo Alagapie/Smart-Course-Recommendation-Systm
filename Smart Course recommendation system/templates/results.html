@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Recommendations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .course-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .course-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .course-link:hover {
+            color: #764ba2;
+        }
+        .course-details {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .similarity-score {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .back {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .back a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .back a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Course Recommendations</h1>
+        <p>Top results for "{{ query }}" based on text similarity</p>
+    </div>
+    <div class="container">
+        <div class="courses">
+            {% for rec in recommendations %}
+            <div class="course-card">
+                <h3 class="course-title">
+                    <a href="{{ rec.url }}" target="_blank" class="course-link">{{ rec.course_title }}</a>
+                </h3>
+                <div class="course-details">
+                    <strong>Subject:</strong> {{ rec.subject }} | 
+                    <strong>Level:</strong> {{ rec.level }} | 
+                    <strong>Price:</strong> {% if rec.price == 0 %}Free{% else %}₦{{ "{:,.0f}".format(rec.price) }}{% endif %} | 
+                    <strong>Rating:</strong> {{ "%.1f"|format(rec.Rating) }}
+                </div>
+                <div class="similarity-score">
+                    Similarity: {{ "%.3f"|format(rec.similarity_score) }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="back">
+            <a href="/">← New Search</a>
+        </div>
+    </div>
+</body>
+</html>
