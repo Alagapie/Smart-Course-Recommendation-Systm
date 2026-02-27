@@ -11,7 +11,7 @@ import markdown
 load_dotenv()
 
 # Configure Gemini
-genai.configure(api_key='AIzaSyCatgekHXjYiwsqe-uPtwYdz-GpLvOwFd4') #os.getenv('GEMINI_API_KEY') )
+
 model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
 app = Flask(__name__)
@@ -360,4 +360,5 @@ def search():
 
 
 if __name__ == '__main__':
+
     app.run(debug=True)
